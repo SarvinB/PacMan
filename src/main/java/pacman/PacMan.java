@@ -1,6 +1,7 @@
 package pacman;
 
 import GameObject.PacManChar;
+import pacman.other.Pair;
 
 public class PacMan
 {
@@ -8,6 +9,7 @@ public class PacMan
     public static int speed = 1;
     PacManChar pacManChar;
     private Callback callback;
+    private int points = 0;
 
     public PacMan(Callback callback)
     {
@@ -15,7 +17,7 @@ public class PacMan
     }
 
     public void initial() {
-        PacManChar pacManChar = new PacManChar("/head.png", null);
+        PacManChar pacManChar = new PacManChar("/pacman.png");
         this.pacManChar = pacManChar;
         pacManChar.setX(PacManGame.START_X + 10);
         pacManChar.setY(PacManGame.START_Y);
@@ -24,9 +26,18 @@ public class PacMan
         this.callback.addPacMan(pacManChar);
     }
 
+    public Pair<Integer, Integer> pacManPositions() {
+        return new Pair<>(pacManChar.getX(), pacManChar.getY());
+    }
+
+    public PacManChar getPacManChar() {
+        return pacManChar;
+    }
 
 
-    // check collision with wall
+    public boolean hasHeadCollisionWithWall() {
+        return false;
+    }
 
     public boolean isPacManCharOut(int width, int height) {
         if (pacManChar.getX() < 0) return true;
@@ -34,6 +45,11 @@ public class PacMan
         if (pacManChar.getX() + pacManChar.getWidth() > width) return true;
         if (pacManChar.getY() + pacManChar.getHeight() > height) return true;
         return false;
+    }
+
+    public void addPoint()
+    {
+        points += 100;
     }
 
     public void clear() {

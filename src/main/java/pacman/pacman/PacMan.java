@@ -12,7 +12,7 @@ public class PacMan
     }
 
     public void initial() {
-        PacManChar pacManChar = new PacManChar("/head.png", null);
+        PacManChar pacManChar = new PacManChar("/head.png");
         this.pacManChar = pacManChar;
         pacManChar.setX(PacManGame.START_X + 10);
         pacManChar.setY(PacManGame.START_Y);

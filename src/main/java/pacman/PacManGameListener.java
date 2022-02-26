@@ -1,4 +1,5 @@
 package pacman;
+import GameObject.PacManChar;
 import gameEngine.GameListener;
 
 public class PacManGameListener implements GameListener {
@@ -12,29 +13,36 @@ public class PacManGameListener implements GameListener {
     }
 
     @Override
-    public void onUpButtonClicked()
-    {
-
+    public void onUpButtonClicked() {
+        if (pacMan.getPacManChar().getDirection() == PacManChar.Direction.DOWN) return;
+        pacMan.getPacManChar().setAngle(0);
+        pacMan.getPacManChar().setDirection(PacManChar.Direction.UP);
     }
 
     @Override
     public void onDownButtonClicked() {
-
+        if (pacMan.getPacManChar().getDirection() == PacManChar.Direction.UP) return;
+        pacMan.getPacManChar().setAngle(2);
+        pacMan.getPacManChar().setDirection(PacManChar.Direction.DOWN);
     }
 
     @Override
     public void onRightButtonClicked() {
-
+        if (pacMan.getPacManChar().getDirection() == PacManChar.Direction.LEFT) return;
+        pacMan.getPacManChar().setAngle(1);
+        pacMan.getPacManChar().setDirection(PacManChar.Direction.RIGHT);
     }
 
     @Override
     public void onLeftButtonClicked() {
-
+        if (pacMan.getPacManChar().getDirection() == PacManChar.Direction.RIGHT) return;
+        pacMan.getPacManChar().setAngle(3);
+        pacMan.getPacManChar().setDirection(PacManChar.Direction.LEFT);
     }
 
     @Override
     public void onSpaceButtonClicked() {
-
+        stopper.stop(!stopper.isStop());
     }
 
     @Override
@@ -47,8 +55,9 @@ public class PacManGameListener implements GameListener {
 
     }
 
+
     public interface Stopper {
-        void stop(boolean var1);
+        void stop(boolean b);
 
         boolean isStop();
     }

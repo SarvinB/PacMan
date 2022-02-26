@@ -15,6 +15,7 @@ public class PacManGame extends GameEngine
     private boolean gameStop;
     private boolean gameOver;
     private PackManLevel packManLevel;
+    private SeedGenerator seedGenerator;
     private int eatenSeeds;
     private int width;
     private int height;
@@ -23,9 +24,7 @@ public class PacManGame extends GameEngine
         this.width = width;
         this.height = height;
         this.pacMan = new PacMan(this::addGameObject);
-//        SeedAdder var10003 = this::addGameObject;
-        PacMan var10004 = this.pacMan;
-        Objects.requireNonNull(var10004);
+        seedGenerator = new SeedGenerator(this::addGameObject, pacMan::pacManPositions, getWidth(), getHeight());
         this.setGameListener(new PacManGameListener(this.pacMan, new PacManGameListener.Stopper() {
             public void stop(boolean b) {
                 PacManGame.this.gameStop = b;
@@ -48,31 +47,48 @@ public class PacManGame extends GameEngine
     }
 
     @Override
-    protected void updateGame() {
+    protected void updateGame()
+    {
+        if (pacMan.hasHeadCollisionWithWall() || pacMan.isPacManCharOut(width, height))
+            gameOver = true;
 
+        if (seedGenerator.checkSeedCollision(pacMan.getPacManChar().getX(), pacMan.getPacManChar().getY())) {
+            seedGenerator.changeSeedPosition();
+            pacMan.addPoint();
+            eatenSeeds++;
+        }
     }
 
     @Override
-    protected boolean isGameWin() {
-        return false;
+    protected boolean isGameWin()
+    {
+        return eatenSeeds == 5;
     }
 
     @Override
     protected boolean isGameOver() {
-        return false;
+        return gameOver;
     }
 
     @Override
     protected boolean isGameStop() {
-        return false;
+        return gameStop;
     }
 
     @Override
     protected void initialGame() {
-        this.gameOver = false;
-        this.gameStop = false;
-        //this.packManLevel = (PackManLevel) LevelHandler.getLevelHandler().getCurrentLevel();
-        //this.setDelay(this.packManLevel.getDelay());
+        seedGenerator.initial();
+        pacMan.initial();
+        gameOver = false;
+        gameStop = false;
+//        packManLevel = LevelHandler.<PackManLevel>getLevelHandler().getCurrentLevel();
+//        setDelay(packManLevel.getDelay());
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+
     }
 
     @Override
