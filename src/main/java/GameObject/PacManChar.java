@@ -44,7 +44,6 @@ public class PacManChar extends AutoMoverSprite
     @Override
     public void update() {
         super.update();
-
     }
 
 }
